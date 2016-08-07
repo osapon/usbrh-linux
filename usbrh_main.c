@@ -132,14 +132,15 @@ int count;
 
 void usage()
 {
-    puts("USBRH on Linux 0.05 by Briareos\nusage: usbrh [-vthm1fl]\n"
+    puts("USBRH on Linux 0.05 by Briareos\nusage: usbrh [-vthm1fls]\n"
          "       -v : verbose\n"
          "       -t : temperature (for MRTG2)\n"
          "       -h : humidity (for MRTG2)\n"
          "       -m : temperature/humidity output(for MRTG2)\n"
          "       -1 : 1-line output\n"
          "       -fn: set device number(n>0)\n"
-         "       -l : Device list\n" );
+         "       -l : Device list\n"
+         "       -sn: set sleep duration in n msec (default: 100ms)\n" );
 }
 
 int main(int argc, char *argv[])
@@ -154,6 +155,7 @@ unsigned char data[8];
 char flag_v, flag_t, flag_h, flag_d, flag_f, flag_1line, flag_mrtg, flag_l;
 char tmpDevice[8];
 int  DeviceNum;
+unsigned long sleep_usec;
 
     dev = NULL;
     dh = NULL;
@@ -161,11 +163,12 @@ int  DeviceNum;
     DeviceNum = 1;
     flag_f = flag_v = flag_t = flag_h = flag_d = flag_1line = flag_mrtg = flag_l = 0;
     temperature = humidity = 0;
+    sleep_usec = 100 * 1000;
     memset(buff, 0, sizeof(buff));
     memset(data, 0, sizeof(data));
     memset(tmpDevice, 0, sizeof(tmpDevice));
 
-    while((opt = getopt(argc, argv,"lvth1dmf:?")) != -1){
+    while((opt = getopt(argc, argv,"lvth1dmf:s:?")) != -1){
         switch(opt){
             case 'v':
                 flag_v = 1;
@@ -195,6 +198,9 @@ int  DeviceNum;
                 break;
             case 'l':
                 flag_l = 1;
+                break;
+            case 's':
+                sleep_usec = atoi(optarg) * 1000;
                 break;
             default:
                 usage();
@@ -230,15 +236,23 @@ int  DeviceNum;
     }
 
     if((rc = usb_set_configuration(dh, dev->config->bConfigurationValue))<0){
-        puts("usb_set_configuration error");
-        usb_close(dh);
-        exit(3);
+        if((rc = usb_detach_kernel_driver_np(dh, dev->config->interface->altsetting->bInterfaceNumber))<0){
+            printf("usb_detach_kernel_driver_np error: %s\n", usb_strerror());
+            usb_close(dh);
+            exit(3);
+        }else{
+            if((rc =usb_set_configuration(dh, dev->config->bConfigurationValue))<0){
+                printf("usb_set_configuration error: %s\n", usb_strerror());
+                usb_close(dh);
+                exit(3);
+            }
+        }
     }
 
     if((rc =usb_claim_interface(dh, dev->config->interface->altsetting->bInterfaceNumber))<0){
         //puts("usb_claim_interface error");
         if((rc = usb_detach_kernel_driver_np(dh, dev->config->interface->altsetting->bInterfaceNumber))<0){
-            puts("usb_detach_kernel_driver_np error");
+            printf("usb_detach_kernel_driver_np error: %s\n", usb_strerror());
             usb_close(dh);
             exit(4);
         }else{
@@ -266,7 +280,7 @@ int  DeviceNum;
 
     // usb_control_msg() is successed
     if(rc>=0){
-        sleep(1);
+        usleep(sleep_usec);
 
         // Read data from device
         rc = usb_bulk_read(dh, 1, buff, 7, 5000);
