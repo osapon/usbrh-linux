@@ -147,11 +147,11 @@ int main(int argc, char *argv[])
 {
 struct usb_device *dev;
 usb_dev_handle *dh;
-char buff[512];
+char buff[8];
 int rc;
 int iTemperature, iHumidity, opt;
 double temperature, humidity;
-unsigned char data[8];
+char data[8];
 char flag_v, flag_t, flag_h, flag_d, flag_1line, flag_mrtg, flag_l;
 char tmpDevice[8];
 int  DeviceNum;
@@ -288,7 +288,7 @@ unsigned long sleep_usec;
                 puts("usb_bulk_read error");
             } else {
                 printf("usb_bulk_read:[%d] bytes readed.\n", rc);
-                dump(buff, rc);
+                dump(data, rc);
             }
         }
 
