@@ -12,4 +12,4 @@ uninstall:
 	rm -f /usr/local/bin/$(EXE)
 
 clean: 
-	rm $(EXE)
+	rm -f $(EXE)
