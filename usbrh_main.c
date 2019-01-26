@@ -305,7 +305,7 @@ unsigned long sleep_usec;
     // Display Result
     if(flag_v){
         printf("Temperature: %.2f C\n", temperature);
-        printf("Humidity: %.2f %\n", humidity);
+        printf("Humidity: %.2f %%\n", humidity);
     }else
     if(flag_t){
         printf("%.2f\n%.2f\n\nTemperature\n", temperature, temperature);
