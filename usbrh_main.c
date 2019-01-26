@@ -327,7 +327,8 @@ unsigned long sleep_usec;
         exit(5);
     }
 
-    usb_close(dh);
+    if (usb_reset(dh) < 0) puts("usb_reset error");
+    if (usb_close(dh) < 0) puts("usb_close error");
 
     return(0);
 }
