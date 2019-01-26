@@ -3,7 +3,13 @@ SRC = usbrh_main.c
 EXE = usbrh
 
 $(EXE): $(SRC)
-	gcc -lusb -g -o $@ $^
+	gcc -g -o $@ $^ -lusb
+
+install: $(EXE)
+	cp $(EXE) /usr/local/bin/$(EXE)
+
+uninstall:
+	rm -f /usr/local/bin/$(EXE)
 
 clean: 
 	rm $(EXE)
