@@ -64,7 +64,7 @@ double tmp;
     return((t1-25)*(t1+t2*in)+tmp);
 }
 
-void dump(unsigned char *in, int length)
+void dump(char *in, int length)
 {
 int i;
 
