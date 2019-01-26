@@ -83,6 +83,7 @@ USBRH on Linux ver.0.06 Readme
         ・玄箱
         ・USBRH x2
         ・ThinkPAD X60(+VMware Player)
+		・ThinkPAD Carbon X1 6Gen
     ソフトウェア：
       ・玄箱
         ・Debian 4.0(Linux KURO-BOX 2.4.17_mvl21-sandpoint)
@@ -92,6 +93,10 @@ USBRH on Linux ver.0.06 Readme
         ・Debian 4.0
         ・gcc
         ・libusb
+      ・ThinkPAD Carbon X1 6Gen
+        ・Ubuntu 18.04
+        ・gcc (Ubuntu 7.3.0-27ubuntu1~18.04) 7.3.0
+        ・libusb 0.1.12-31
 
  7. 謝辞
     あおやまさん作の USBRH on *BSD が無ければ、多分こんなプログラムを作ろうなんて
@@ -108,5 +113,5 @@ USBRH on Linux ver.0.06 Readme
     0.04 2007-04-20 複数接続に対応
     0.05 2008-03-24 string.hをincludeしていないと、コンパイル環境によっては
                     コンパイルした時に警告を吐くので対処
-	0.06 2019-01-26 バグの修正
+    0.06 2019-01-26 バグの修正
 
