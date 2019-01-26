@@ -1,5 +1,5 @@
-USBRH on Linux ver.0.04 Readme
-2007/07/19
+USBRH on Linux ver.0.06 Readme
+2019/01/26
 
  1. これはなに？
     Strawberry Linux Co., Ltd.から販売されている USB接続型温湿度計 USBRH を、
@@ -108,4 +108,5 @@ USBRH on Linux ver.0.04 Readme
     0.04 2007-04-20 複数接続に対応
     0.05 2008-03-24 string.hをincludeしていないと、コンパイル環境によっては
                     コンパイルした時に警告を吐くので対処
+	0.06 2019-01-26 バグの修正
 
